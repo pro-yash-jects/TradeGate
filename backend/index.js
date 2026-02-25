@@ -3,6 +3,8 @@ import express from "express";
 import dotenv from "dotenv"
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import stockRoutes from "./routes/stockRoutes.js";
+import {authenticate, authorizeAdmin} from "./middleware/authMiddleWare.js"
 
 //initalisation
 const app = express()
@@ -16,9 +18,10 @@ const env = process.env;
 connectDB();
 
 app.use('/api/auth', authRoutes)
+app.use('/api/stocks', stockRoutes)
 
 // '/' route
-app.get('/', (req, res) => {
+app.get('/', authenticate, (req, res) => {
     res.send("hello world");
 })
 
