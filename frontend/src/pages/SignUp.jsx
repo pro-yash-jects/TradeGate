@@ -21,8 +21,11 @@ export default function SignUp() {
       await signup(form.firstName, form.lastName, form.email, form.password);
       navigate('/login');
     } catch (err) {
-      const msg = err.response?.data?.message || err.response?.data || 'Signup failed. Please try again.';
-      setError(msg);
+      const msg = err.response?.data?.message ||
+        (typeof err.response?.data === 'string' ? err.response?.data : null) ||
+        'Signup failed. Please try again.';
+
+      setError(typeof msg === 'object' ? JSON.stringify(msg) : msg);
     } finally {
       setLoading(false);
     }
